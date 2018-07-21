@@ -13,7 +13,7 @@ class Test {
         else return false;
     }
 }
-class PassOb {
+public class PassOb {
     public static void main(String args[]) {
         Test ob1 = new Test(100, 22); //only created object
         Test ob2 = new Test(100, 22);
