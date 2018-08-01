@@ -2,31 +2,29 @@ package net.proselyte.javacore.practice.tictactoe;
 
 import java.util.Scanner;
 
-public class GameLogic extends Field {
-
-    // current player(CROSS or ZERO)
+public class GameLogic{
     public String currentPlayer;
-    //variables for  representing the contents of field
     public final String EMPTY_CELL = "   ", CROSS = " X ", ZERO = " O ";
-
-    //variables for  representing the various states of the game
-    public  int statusGame;
-    public  final int STATUS_GAME_CONTINUES=0, STATUS_DRAW = 1, STATUS_WINNING_X = 2, STATUS_WINNING_0 = 3;
-
+    public   StatusGame statusGame;
     public Scanner in = new Scanner(System.in);
 
+    Field field = new Field();
+    private String[][] fieldGrid = field.getGrid();
+
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     public void start() {
-        for (int row = 0; row < AMOUNT_ROWS; row++) {
-            for (int column = 0; column < AMOUNT_COLUMNS; column++) {
-                grid[row][column] = EMPTY_CELL;
-            }
-        }
         currentPlayer = CROSS;
-        showGrid(); // print empty grid
-    }
+        field.showGrid(); // print empty fieldGrid
+        do {
+            getPlayerInput();
+            analyzeGrid();
+            field.showGrid();
+            checkGameStatus();
+            currentPlayer = (currentPlayer == CROSS?ZERO:CROSS);// Switch player
+        }
+        while (statusGame==StatusGame.CONTINUE);
 
+    }
 
     public void getPlayerInput() {
         //  checking  whether user input is allowed (does not go beyond boundary)
@@ -37,8 +35,8 @@ public class GameLogic extends Field {
             int row = in.nextInt() - 1;
             int column = in.nextInt() - 1;
 
-            if (row >= 0 && row < AMOUNT_ROWS && column >= 0 && column < AMOUNT_COLUMNS && grid[row][column] == EMPTY_CELL) {
-                grid[row][column] = currentPlayer;
+            if (row >= 0 && row < field.getAMOUNT_ROWS() && column >= 0 && column < field.getAMOUNT_COLUMNS() && fieldGrid[row][column] == EMPTY_CELL) {
+                fieldGrid[row][column] = currentPlayer;
                 inputIsValid = true;// to stop loop!
 
             } else {
@@ -48,74 +46,66 @@ public class GameLogic extends Field {
         } while (!inputIsValid);
 
     }
-
-
-
     public void analyzeGrid() {
 
         String winner = findWinner();
         if (winner.equals(CROSS)){
-            statusGame = STATUS_WINNING_X;
+            statusGame = StatusGame.WINNING_X;
+
         } else if (winner.equals(ZERO)){
-            statusGame = STATUS_WINNING_0;
+            statusGame = StatusGame.WINNING_0;
+
+
         } else if (checkFillingCells()){
-            statusGame = STATUS_DRAW;
+            statusGame = StatusGame.DRAW;
         } else {
-            statusGame = STATUS_GAME_CONTINUES;
+            statusGame = StatusGame.CONTINUE;
         }
     }
-
-
-
-//==========================================================================
 
     public String findWinner() {
 
         int amountIdenticalCells;
         // 3 in row
-        for (int row = 0; row < AMOUNT_ROWS; row++) {
+        for (int row = 0; row < field.getAMOUNT_ROWS(); row++) {
             amountIdenticalCells = 0;//for zeroing
-            for (int column = 0; column < AMOUNT_COLUMNS; column++) {
-                if (grid[row][0] != EMPTY_CELL && grid[row][0] == grid[row][column]) {
+            for (int column = 0; column < field.getAMOUNT_COLUMNS(); column++) {
+                if (fieldGrid[row][0] != EMPTY_CELL && fieldGrid[row][0] == fieldGrid[row][column]) {
                     amountIdenticalCells++;
                 }
             }
             if (amountIdenticalCells == 3) {
-                return grid[row][0];  //winner(x or o)
-                }
+                return fieldGrid[row][0];  //winner(x or o)
+            }
         }
-
         // 3 in column
-        for (int column = 0; column < AMOUNT_COLUMNS; column++) {
+        for (int column = 0; column < field.getAMOUNT_COLUMNS(); column++) {
             amountIdenticalCells = 0;
-            for (int row = 0; row < AMOUNT_ROWS; row++) {
-                if (grid[0][column] != EMPTY_CELL && grid[0][column] == grid[row][column]) {
+            for (int row = 0; row < field.getAMOUNT_ROWS(); row++) {
+                if (fieldGrid[0][column] != EMPTY_CELL && fieldGrid[0][column] == fieldGrid[row][column]) {
                     amountIdenticalCells++;
                 }
             }
             if (amountIdenticalCells == 3) {
-                return grid[0][column];
+                return fieldGrid[0][column];
             }
         }
-
-//        3 by diagonally from left to right
-        if (grid[0][0] != EMPTY_CELL && grid[0][0] == grid[1][1] && grid[0][0] == grid[2][2]) {
-            return grid[0][0];
+        // 3 by diagonally from left to right
+        if (fieldGrid[0][0] != EMPTY_CELL && fieldGrid[0][0] == fieldGrid[1][1] && fieldGrid[0][0] == fieldGrid[2][2]) {
+            return fieldGrid[0][0];
         }
-
         // 3 by diagonally from right to left
-        if (grid[0][2] != EMPTY_CELL && grid[1][1] == grid[0][2] && grid[2][0] == grid[0][2]) {
-            return grid[0][2];
+        if (fieldGrid[0][2] != EMPTY_CELL && fieldGrid[1][1] == fieldGrid[0][2] && fieldGrid[2][0] == fieldGrid[0][2]) {
+            return fieldGrid[0][2];
         }
-
         return EMPTY_CELL; // if there isn't winner
     }
-//==============================================================
+    //==============================================================
 
     public boolean checkFillingCells() {
-        for (int row=0; row<AMOUNT_ROWS; row++){
-            for (int column=0; column < AMOUNT_COLUMNS; column++){
-                if (grid[row][column]==EMPTY_CELL){
+        for (int row=0; row<field.getAMOUNT_ROWS(); row++){
+            for (int column=0; column < field.getAMOUNT_COLUMNS(); column++){
+                if (fieldGrid[row][column]==EMPTY_CELL){
                     return false; // there is empty cell
                 }
             }
@@ -123,4 +113,13 @@ public class GameLogic extends Field {
         return true; // empty cells not found
     }
 
+    public void checkGameStatus(){
+        if (statusGame==StatusGame.WINNING_X){
+            System.out.println("'X' won!");
+        } else if (statusGame==StatusGame.WINNING_0){
+            System.out.println("'O' won!");
+        } else if (statusGame==StatusGame.DRAW){
+            System.out.println("It's a Draw! Go to hell!");
+        }
+    }
 }

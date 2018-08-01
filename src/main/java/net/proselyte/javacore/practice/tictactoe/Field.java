@@ -1,12 +1,29 @@
 package net.proselyte.javacore.practice.tictactoe;
-
-import java.util.Scanner;
-
 public class Field {
-    //variable for creating field:
-    public final int AMOUNT_ROWS = 3, AMOUNT_COLUMNS = 3;
-    public String[][] grid = new String[AMOUNT_ROWS][AMOUNT_COLUMNS];
+    private final int AMOUNT_ROWS = 3, AMOUNT_COLUMNS = 3;
+    private String[][] grid = new String[AMOUNT_ROWS][AMOUNT_COLUMNS];
 
+    public int getAMOUNT_ROWS() {
+        return AMOUNT_ROWS;
+    }
+
+    public int getAMOUNT_COLUMNS() {
+        return AMOUNT_COLUMNS;
+    }
+
+    public String[][] getGrid() {
+        return grid;
+    }
+
+    //------------a crazy constructor----------------------
+    public Field(){
+        for (int row = 0; row < AMOUNT_ROWS; row++) {
+            for (int column = 0; column < AMOUNT_COLUMNS; column++) {
+                grid[row][column] = "   ";
+            }
+        }
+    }
+//---------------------------------------------------------
 
     public void showGrid() {
         for (int row = 0; row < AMOUNT_ROWS; row++) {
@@ -29,3 +46,5 @@ public class Field {
 
 
 }
+
+

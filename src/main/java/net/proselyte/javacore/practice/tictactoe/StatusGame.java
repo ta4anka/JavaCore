@@ -1,7 +1,7 @@
 package net.proselyte.javacore.practice.tictactoe;
 
 public enum StatusGame {
-    CONTINUES,
+    CONTINUE,
     DRAW,
     WINNING_X,
     WINNING_0;
