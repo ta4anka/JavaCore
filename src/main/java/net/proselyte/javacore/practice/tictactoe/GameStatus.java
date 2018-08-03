@@ -1,6 +1,6 @@
 package net.proselyte.javacore.practice.tictactoe;
 
-public enum StatusGame {
+public enum GameStatus {
     CONTINUE,
     DRAW,
     WINNING_X,

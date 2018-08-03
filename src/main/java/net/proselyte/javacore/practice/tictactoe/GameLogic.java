@@ -5,16 +5,20 @@ import java.util.Scanner;
 public class GameLogic{
     public String currentPlayer;
     public final String EMPTY_CELL = "   ", CROSS = " X ", ZERO = " O ";
-    public   StatusGame statusGame;
-    public Scanner in = new Scanner(System.in);
+    public   GameStatus statusGame;
+    public Scanner in;
+    Field field;
 
-    Field field = new Field();
-    private String[][] fieldGrid = field.getGrid();
 
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public GameLogic() {
+        this.field = new Field();
+        this.in = new Scanner(System.in);
+    }
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void start() {
         currentPlayer = CROSS;
-        field.showGrid(); // print empty fieldGrid
+        field.showGrid(); // print empty field.getGrid()
         do {
             getPlayerInput();
             analyzeGrid();
@@ -22,7 +26,7 @@ public class GameLogic{
             checkGameStatus();
             currentPlayer = (currentPlayer == CROSS?ZERO:CROSS);// Switch player
         }
-        while (statusGame==StatusGame.CONTINUE);
+        while (statusGame==GameStatus.CONTINUE);
 
     }
 
@@ -35,8 +39,8 @@ public class GameLogic{
             int row = in.nextInt() - 1;
             int column = in.nextInt() - 1;
 
-            if (row >= 0 && row < field.getAMOUNT_ROWS() && column >= 0 && column < field.getAMOUNT_COLUMNS() && fieldGrid[row][column] == EMPTY_CELL) {
-                fieldGrid[row][column] = currentPlayer;
+            if (row >= 0 && row < field.getAMOUNT_ROWS() && column >= 0 && column < field.getAMOUNT_COLUMNS() && field.getGrid()[row][column] == EMPTY_CELL) {
+                field.getGrid()[row][column] = currentPlayer;
                 inputIsValid = true;// to stop loop!
 
             } else {
@@ -50,16 +54,16 @@ public class GameLogic{
 
         String winner = findWinner();
         if (winner.equals(CROSS)){
-            statusGame = StatusGame.WINNING_X;
+            statusGame = GameStatus.WINNING_X;
 
         } else if (winner.equals(ZERO)){
-            statusGame = StatusGame.WINNING_0;
+            statusGame = GameStatus.WINNING_0;
 
 
         } else if (checkFillingCells()){
-            statusGame = StatusGame.DRAW;
+            statusGame = GameStatus.DRAW;
         } else {
-            statusGame = StatusGame.CONTINUE;
+            statusGame = GameStatus.CONTINUE;
         }
     }
 
@@ -70,33 +74,33 @@ public class GameLogic{
         for (int row = 0; row < field.getAMOUNT_ROWS(); row++) {
             amountIdenticalCells = 0;//for zeroing
             for (int column = 0; column < field.getAMOUNT_COLUMNS(); column++) {
-                if (fieldGrid[row][0] != EMPTY_CELL && fieldGrid[row][0] == fieldGrid[row][column]) {
+                if (field.getGrid()[row][0] != EMPTY_CELL && field.getGrid()[row][0] == field.getGrid()[row][column]) {
                     amountIdenticalCells++;
                 }
             }
             if (amountIdenticalCells == 3) {
-                return fieldGrid[row][0];  //winner(x or o)
+                return field.getGrid()[row][0];  //winner(x or o)
             }
         }
         // 3 in column
         for (int column = 0; column < field.getAMOUNT_COLUMNS(); column++) {
             amountIdenticalCells = 0;
             for (int row = 0; row < field.getAMOUNT_ROWS(); row++) {
-                if (fieldGrid[0][column] != EMPTY_CELL && fieldGrid[0][column] == fieldGrid[row][column]) {
+                if (field.getGrid()[0][column] != EMPTY_CELL && field.getGrid()[0][column] == field.getGrid()[row][column]) {
                     amountIdenticalCells++;
                 }
             }
             if (amountIdenticalCells == 3) {
-                return fieldGrid[0][column];
+                return field.getGrid()[0][column];
             }
         }
         // 3 by diagonally from left to right
-        if (fieldGrid[0][0] != EMPTY_CELL && fieldGrid[0][0] == fieldGrid[1][1] && fieldGrid[0][0] == fieldGrid[2][2]) {
-            return fieldGrid[0][0];
+        if (field.getGrid()[0][0] != EMPTY_CELL && field.getGrid()[0][0] == field.getGrid()[1][1] && field.getGrid()[0][0] == field.getGrid()[2][2]) {
+            return field.getGrid()[0][0];
         }
         // 3 by diagonally from right to left
-        if (fieldGrid[0][2] != EMPTY_CELL && fieldGrid[1][1] == fieldGrid[0][2] && fieldGrid[2][0] == fieldGrid[0][2]) {
-            return fieldGrid[0][2];
+        if (field.getGrid()[0][2] != EMPTY_CELL && field.getGrid()[1][1] == field.getGrid()[0][2] && field.getGrid()[2][0] == field.getGrid()[0][2]) {
+            return field.getGrid()[0][2];
         }
         return EMPTY_CELL; // if there isn't winner
     }
@@ -105,7 +109,7 @@ public class GameLogic{
     public boolean checkFillingCells() {
         for (int row=0; row<field.getAMOUNT_ROWS(); row++){
             for (int column=0; column < field.getAMOUNT_COLUMNS(); column++){
-                if (fieldGrid[row][column]==EMPTY_CELL){
+                if (field.getGrid()[row][column]==EMPTY_CELL){
                     return false; // there is empty cell
                 }
             }
@@ -114,11 +118,11 @@ public class GameLogic{
     }
 
     public void checkGameStatus(){
-        if (statusGame==StatusGame.WINNING_X){
+        if (statusGame==GameStatus.WINNING_X){
             System.out.println("'X' won!");
-        } else if (statusGame==StatusGame.WINNING_0){
+        } else if (statusGame==GameStatus.WINNING_0){
             System.out.println("'O' won!");
-        } else if (statusGame==StatusGame.DRAW){
+        } else if (statusGame==GameStatus.DRAW){
             System.out.println("It's a Draw! Go to hell!");
         }
     }
