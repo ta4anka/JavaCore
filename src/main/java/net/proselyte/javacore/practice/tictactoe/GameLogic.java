@@ -9,13 +9,12 @@ public class GameLogic{
     public Scanner in;
     Field field;
 
-
     public GameLogic() {
         this.field = new Field();
         this.in = new Scanner(System.in);
     }
 
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void start() {
         currentPlayer = CROSS;
         field.showGrid(); // print empty field.getGrid()
