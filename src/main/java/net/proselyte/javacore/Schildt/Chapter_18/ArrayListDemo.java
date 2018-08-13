@@ -1,10 +1,11 @@
 package net.proselyte.javacore.Schildt.Chapter_18;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArrayListDemo {
     public static void main(String[] args) {
-        ArrayList<String> al = new ArrayList<String>();
+        List<String> al = new ArrayList<String>();
         System.out.println("Initial size of al: " + al.size());
 
         al.add("C");
