@@ -1,6 +1,5 @@
 package net.proselyte.javacore.mystudy.JavaPro;
 
-
 //Stack is a subclass of Vector
 // that implements a standard last-in, first-out stack.
 
