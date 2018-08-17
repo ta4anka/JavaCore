@@ -20,6 +20,6 @@ public class IteratorTest {
 
         //---Java 5---
         for(int x : list)
-            System.out.print(x + " "); //1 2 3
+            System.out.print(x + " ");
     }
 }
