@@ -17,10 +17,12 @@ public class FixedQueue extends PriorityQueue {
         this.Capacity = capacity;
     }
 
+
+
     @Override
     public boolean offer(Object o) {
         if(this.size() > Capacity )
-            this.poll();
+            this.remove();
         return super.offer(o);
     }
 
