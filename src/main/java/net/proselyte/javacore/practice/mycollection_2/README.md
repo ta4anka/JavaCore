@@ -14,5 +14,5 @@ The 1st element is deleted, and the next one is moved one element to the left.
 
 ### Solution
 There are two file:
-1. FisedQueue.java contains all the logic according to task.
-2. FixedQueueRunner.java is main which demonstrates of the realized methods. 
+1. FixedQueue.java contains all the logic according to task.
+2. FixedQueueRunner.java is main which demonstrates of the realization. 
