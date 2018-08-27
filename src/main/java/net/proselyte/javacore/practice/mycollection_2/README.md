@@ -1,4 +1,4 @@
-## My Collection 1
+## My Collection 2
 ### Task
 Implement a collection that has a fixed size.
 
