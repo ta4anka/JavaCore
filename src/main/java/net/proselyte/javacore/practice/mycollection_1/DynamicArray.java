@@ -1,6 +1,7 @@
 package net.proselyte.javacore.practice.mycollection_1;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class DynamicArray extends ArrayList<Integer> {
 
@@ -11,46 +12,69 @@ public class DynamicArray extends ArrayList<Integer> {
         return super.add(integer);
     }
 
-    public int specialRemove(Integer integer) {
-        super.remove(this.indexOf(integer));
-        for (int i = 0; i < this.size(); i++) {
-            this.set(i, this.get(i) - integer);
+    public int specialRemove(Integer integer)throws ArrayIndexOutOfBoundsException {
+        if (!this.contains(integer)) {
+            throw new ArrayIndexOutOfBoundsException("There isn't a such element in the collection!");
+        } else {
+            super.remove(this.indexOf(integer));
+            for (int i = 0; i < this.size(); i++) {
+                this.set(i, this.get(i) - integer);
+            }
+            return integer;
         }
-        return integer;
     }
 
-    public int getElByValue(int value) {
+    public int getElByValue(int value) throws NoSuchElementException {
+        if (!this.contains(value)) {
+            throw new NoSuchElementException("There isn't a such element in collection!");
+        }
         return indexOf(value);
     }
 
-    public int getElByIndex(int index) {
-        return get(index);
-    }
 
-    public int maxElement() {
-        int maxElement = getElByIndex(0);
-        for (Integer x : this) {
-            if (x > maxElement) maxElement = x;
+    public int getElByIndex(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || ((this.size() - 1) < index)) {
+            throw new IndexOutOfBoundsException("This an index is out of bounds of the collection!");
+        } else {
+            return get(index);
         }
-        return maxElement;
     }
 
-    public int minElement() {
-        int minElement = getElByIndex(0);
-        {
-            for (Integer x : this)
+    public int maxElement() throws IndexOutOfBoundsException {
+        if (this.isEmpty()) {
+            throw new IndexOutOfBoundsException("The collection is empty!");
+        } else {
+            int maxElement = getElByIndex(0);
+            for (Integer x : this) {
+                if (x > maxElement) maxElement = x;
+            }
+            return maxElement;
+        }
+    }
+
+    public int minElement() throws IndexOutOfBoundsException{
+        if (this.isEmpty()) {
+            throw new IndexOutOfBoundsException("The collection is empty!");
+        } else {
+            int minElement = getElByIndex(0);
+            for (Integer x : this) {
                 if (x < minElement) minElement = x;
+            }
+            return minElement;
         }
-        return minElement;
     }
 
-    public double average() {
-        int sum = 0;
-        for (Integer x : this) {
-            sum += x;
+
+    public double average() throws IndexOutOfBoundsException{
+        if (this.isEmpty()) {
+            throw new IndexOutOfBoundsException("The collection is empty!");
+        } else {
+            int sum = 0;
+            for (Integer x : this) {
+                sum += x;
+            }
+            return (double) sum / this.size();
         }
-        return (double) sum / this.size();
     }
 }
-
 
