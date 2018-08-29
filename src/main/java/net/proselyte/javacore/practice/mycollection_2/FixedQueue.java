@@ -2,6 +2,7 @@ package net.proselyte.javacore.practice.mycollection_2;
 
 //https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html
 
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 
 public class FixedQueue extends PriorityQueue {
@@ -14,7 +15,11 @@ public class FixedQueue extends PriorityQueue {
 
     //second constructor
     public FixedQueue(int capacity) {
-        this.Capacity = capacity;
+        if (capacity < 1) {
+            throw new NoSuchElementException("The capacity will be a number > 0 !");
+        } else {
+            this.Capacity = capacity;
+        }
     }
 
 
