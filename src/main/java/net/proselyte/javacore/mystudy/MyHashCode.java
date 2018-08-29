@@ -32,13 +32,22 @@ public class MyHashCode {
         Object object = new Object();
         int hCode;
         hCode = object.hashCode();
-        System.out.println(hCode); //==> 1639705018
+        System.out.println(hCode); //==> 1639705018; System.identityHashCode(object) is the same.
+
+
 
         BlackBox b1 = new BlackBox(5,10);
         BlackBox b2 = new BlackBox(5,10);
 
         System.out.println(b1.equals(b2)); // true
-
         System.out.println(b1.hashCode() == b2.hashCode()); // true
+
+        // hashCode after ovveride:
+        System.out.println(b1.hashCode()); // 1126
+        System.out.println(b2.hashCode()); // 1126
+
+        // identityHashCode:
+        System.out.println(System.identityHashCode(b1)); // 1627674070
+        System.out.println(System.identityHashCode(b2)); // 1360875712
     }
 }
