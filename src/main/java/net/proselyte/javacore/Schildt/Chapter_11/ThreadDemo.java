@@ -1,15 +1,14 @@
 package net.proselyte.javacore.Schildt.Chapter_11;
-
 // Create a second thread.
 class NewThread implements Runnable {//========================
-    Thread t;
+    Thread t; // instance of Thread's class
 
-    NewThread() {//--------------------------------------
+    NewThread() {//--------it's constructor-------------
 // Create a new, second thread
         t = new Thread(this, "Demo Thread");
         System.out.println("Child thread: " + t);
         t.start(); // Start the thread
-    }//--------------------------------------------------
+    }//-------------------------------------------------
     // This is the entry point for the second thread.
     public void run() {
         try {
